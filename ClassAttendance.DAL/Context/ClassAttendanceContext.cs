@@ -6,7 +6,7 @@ namespace ClassAttendance.DAL.Context
 {
     public class ClassAttendanceContext : DbContext
     {
-        public ClassAttendanceContext(DbContextOptions<DbContext> options) : base(options)
+        public ClassAttendanceContext(DbContextOptions<ClassAttendanceContext> options) : base(options)
         {
         }
 
@@ -15,8 +15,6 @@ namespace ClassAttendance.DAL.Context
         public DbSet<EducationalInstitutionFaculty> EducationalInstitutionFaculty { get; set; }
 
         public DbSet<Faculty> Faculties { get; set; }
-
-        public DbSet<FacultySpecialty> FacultySpecialties { get; set; }
 
         public DbSet<Specialty> Specialties { get; set; }
 
@@ -29,6 +27,9 @@ namespace ClassAttendance.DAL.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new SpecialityConfiguration());
+            modelBuilder.ApplyConfiguration(new EducationalInstitutionFacultyConfiguration());
+            modelBuilder.ApplyConfiguration(new UsersRolesConfiguration());
+
         }
     }
 }

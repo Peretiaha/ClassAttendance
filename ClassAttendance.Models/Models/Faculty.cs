@@ -11,5 +11,7 @@ namespace ClassAttendance.Models.Models
         public IEnumerable<EducationalInstitutionFaculty> EducationalInstitutionFaculty { get; set; }
 
         public Guid DeanId { get; set; }
+
+        public IEnumerable<Specialty> Specialties { get; set; }
     }
 }

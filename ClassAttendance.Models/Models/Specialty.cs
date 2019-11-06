@@ -10,6 +10,6 @@ namespace ClassAttendance.Models.Models
 
         public int Number { get; set; }
 
-        public IEnumerable<FacultySpecialty> FacultySpecialty { get; set; }
+        public Faculty Faculty { get; set; }
     }
 }
