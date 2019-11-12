@@ -1,11 +1,13 @@
 ﻿using ClassAttendance.Models.Enums;
+using ClassAttendance.Models.Models.Localization;
+using System;
 using System.Collections.Generic;
 
 namespace ClassAttendance.Models.Models
 {
-    public class EducationalInstitution : BaseEntity
+    public class EducationalInstitution 
     {
-        public string Name { get; set; }
+        public Guid EducationalInstitutionId { get; set; }
 
         public EducationalInstitutionType Type { get; set; }
 
@@ -14,5 +16,9 @@ namespace ClassAttendance.Models.Models
         public string City { get; set; }
 
         public IEnumerable<EducationalInstitutionFaculty> EducationalInstitutionFaculty { get; set; } 
+
+        public IEnumerable<EducationalInstitutionTranslate> EducationalInstitutionTranslates { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

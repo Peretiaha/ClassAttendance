@@ -1,15 +1,21 @@
-﻿using System;
+﻿using ClassAttendance.Models.Models.Localization;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ClassAttendance.Models.Models
 {
-    public class Specialty : BaseEntity
+    public class Specialty 
     {
-        public string Name { get; set; }
+        public Guid SpecialityId { get; set; }
 
         public int Number { get; set; }
 
-        public IEnumerable<FacultySpecialty> FacultySpecialty { get; set; }
+        public Faculty Faculty { get; set; }
+
+        public IEnumerable<SpecialtyTranslate> SpecialtyTranslates { get; set; }
+
+        public bool IsDeleted { get; set; }
+
     }
 }

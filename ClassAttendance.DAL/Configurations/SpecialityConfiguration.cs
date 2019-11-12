@@ -9,6 +9,7 @@ namespace ClassAttendance.DAL.Configurations
         public void Configure(EntityTypeBuilder<Specialty> builder)
         {
             builder.HasIndex(x => x.Number).IsUnique();
+            builder.HasKey(x=>x.SpecialityId);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace ClassAttendance.DAL.UnitOfWork
             _db.SaveChanges();
         }
 
-        public IRepository<BaseEntity> GetRepository<T>() where T : class
+        public IRepository<T> GetRepository<T>() where T : class
         {
             return _repositoryFactory.GetRepository<T>();
         }

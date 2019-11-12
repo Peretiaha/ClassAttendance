@@ -7,6 +7,6 @@ namespace ClassAttendance.DAL.Interfaces
 {
     public interface IRepositoryFactory
     {
-        IRepository<BaseEntity> GetRepository<T>() where T : class;
+        IRepository<T> GetRepository<T>() where T : class;
     }
 }

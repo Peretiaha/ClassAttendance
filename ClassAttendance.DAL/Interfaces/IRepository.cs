@@ -7,13 +7,13 @@ using System.Text;
 
 namespace ClassAttendance.DAL.Interfaces
 {
-    public interface IRepository<T> where T : BaseEntity
+    public interface IRepository<T> where T : class
     {
         void Insert(T entity);
 
         void Update(T entity);
 
-        void Delete(Guid id);
+        void Delete(T entity);
 
         T GetSingle(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes);
 

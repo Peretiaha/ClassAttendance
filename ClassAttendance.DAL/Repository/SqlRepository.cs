@@ -10,18 +10,18 @@ using System.Text;
 
 namespace ClassAttendance.DAL.Repository
 {
-    public class SqlRepository<T> : IRepository<BaseEntity>
+    public class SqlRepository<T> : IRepository<T> where T : class
     {
         private readonly ClassAttendanceContext _context;
-        private readonly DbSet<BaseEntity> _dbSet;
+        private readonly DbSet<T> _dbSet;
 
         public SqlRepository(ClassAttendanceContext context)
         {
             _context = context;
-            _dbSet = _context.Set<BaseEntity>();
+            _dbSet = _context.Set<T>();
         }     
 
-        public IEnumerable<BaseEntity> GetMany(Expression<Func<BaseEntity, bool>> filter = null, Func<IEnumerable<BaseEntity>, IOrderedEnumerable<BaseEntity>> orderBy = null, params Expression<Func<BaseEntity, object>>[] includes)
+        public IEnumerable<T> GetMany(Expression<Func<T, bool>> filter = null, Func<IEnumerable<T>, IOrderedEnumerable<T>> orderBy = null, params Expression<Func<T, object>>[] includes)
         {
             var entities = _dbSet.AsQueryable();
             if (filter != null)
@@ -40,7 +40,7 @@ namespace ClassAttendance.DAL.Repository
 
         }
 
-        public BaseEntity GetSingle(Expression<Func<BaseEntity, bool>> filter, params Expression<Func<BaseEntity, object>>[] includes)
+        public T GetSingle(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes)
         {
             var entity = _dbSet.Where(filter);
 
@@ -52,12 +52,12 @@ namespace ClassAttendance.DAL.Repository
             return entity.FirstOrDefault();
         }
 
-        public void Insert(BaseEntity entity)
+        public void Insert(T entity)
         {
             _dbSet.Add(entity);
         }
 
-        public void Update(BaseEntity entity)
+        public void Update(T entity)
         {
             if (_context.Entry(entity).State == EntityState.Detached)
             {
@@ -67,9 +67,9 @@ namespace ClassAttendance.DAL.Repository
 
         }
 
-        public void Delete(Guid id)
+        public void Delete(T entity)
         {
-            _dbSet.Remove(_dbSet.Where(x=>x.Id == id).FirstOrDefault());
+            _dbSet.Remove(entity);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace ClassAttendance.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var connection = @"Server=INSPIRION/IT_SHNIKSQL;Database=GameStoreDb;Trusted_Connection=True;ConnectRetryCount=0";
+            var connection = @"Server=INSPIRION\IT_SHNIKSQL;Database=ClassAttendanceDb;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<ClassAttendanceContext>(options => options.UseSqlServer(connection));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

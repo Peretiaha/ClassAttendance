@@ -16,9 +16,9 @@ namespace ClassAttendance.DAL.Repository
             this._lifetimeScope = lifetimeScope;
         }
 
-        public IRepository<BaseEntity> GetRepository<T>() where T : class
+        public IRepository<T> GetRepository<T>() where T : class
         {
-            return this._lifetimeScope.Resolve<IRepository<BaseEntity>>();
+            return this._lifetimeScope.Resolve<IRepository<T>>();
         }
     }
 
