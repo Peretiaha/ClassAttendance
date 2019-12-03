@@ -30,6 +30,8 @@ namespace ClassAttendance.DAL.Migrations
 
                     b.Property<bool>("IsDeleted");
 
+                    b.Property<string>("Name");
+
                     b.Property<int>("Type");
 
                     b.HasKey("EducationalInstitutionId");
@@ -59,66 +61,11 @@ namespace ClassAttendance.DAL.Migrations
 
                     b.Property<bool>("IsDeleted");
 
+                    b.Property<string>("Name");
+
                     b.HasKey("FacultyId");
 
                     b.ToTable("Faculties");
-                });
-
-            modelBuilder.Entity("ClassAttendance.Models.Models.Localization.EducationalInstitutionTranslate", b =>
-                {
-                    b.Property<Guid>("EducationalInstitutionId");
-
-                    b.Property<string>("Lang");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("EducationalInstitutionId", "Lang");
-
-                    b.HasIndex("Lang");
-
-                    b.ToTable("EducationalInstitutionTranslates");
-                });
-
-            modelBuilder.Entity("ClassAttendance.Models.Models.Localization.FacultyTranslate", b =>
-                {
-                    b.Property<Guid>("FacultyId");
-
-                    b.Property<string>("Lang");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("FacultyId", "Lang");
-
-                    b.HasIndex("Lang");
-
-                    b.ToTable("FacultyTranslates");
-                });
-
-            modelBuilder.Entity("ClassAttendance.Models.Models.Localization.Language", b =>
-                {
-                    b.Property<string>("Lang")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Lang");
-
-                    b.ToTable("Languages");
-                });
-
-            modelBuilder.Entity("ClassAttendance.Models.Models.Localization.SpecialtyTranslate", b =>
-                {
-                    b.Property<Guid>("SpecialtyId");
-
-                    b.Property<string>("Lang");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("SpecialtyId", "Lang");
-
-                    b.HasIndex("Lang");
-
-                    b.ToTable("SpecialtyTranslates");
                 });
 
             modelBuilder.Entity("ClassAttendance.Models.Models.Role", b =>
@@ -141,6 +88,8 @@ namespace ClassAttendance.DAL.Migrations
                     b.Property<Guid?>("FacultyId");
 
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("Name");
 
                     b.Property<int>("Number");
 
@@ -197,45 +146,6 @@ namespace ClassAttendance.DAL.Migrations
                     b.HasOne("ClassAttendance.Models.Models.Faculty", "Faculty")
                         .WithMany("EducationalInstitutionFaculty")
                         .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ClassAttendance.Models.Models.Localization.EducationalInstitutionTranslate", b =>
-                {
-                    b.HasOne("ClassAttendance.Models.Models.EducationalInstitution", "EducationalInstitution")
-                        .WithMany("EducationalInstitutionTranslates")
-                        .HasForeignKey("EducationalInstitutionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ClassAttendance.Models.Models.Localization.Language", "Language")
-                        .WithMany("EducationalInstitutionTranslates")
-                        .HasForeignKey("Lang")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ClassAttendance.Models.Models.Localization.FacultyTranslate", b =>
-                {
-                    b.HasOne("ClassAttendance.Models.Models.Faculty", "Faculty")
-                        .WithMany("FacultyTranslates")
-                        .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ClassAttendance.Models.Models.Localization.Language", "Language")
-                        .WithMany("FacultyTranslates")
-                        .HasForeignKey("Lang")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ClassAttendance.Models.Models.Localization.SpecialtyTranslate", b =>
-                {
-                    b.HasOne("ClassAttendance.Models.Models.Localization.Language", "Language")
-                        .WithMany("SpecialtyTranslates")
-                        .HasForeignKey("Lang")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ClassAttendance.Models.Models.Specialty", "Specialty")
-                        .WithMany("SpecialtyTranslates")
-                        .HasForeignKey("SpecialtyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

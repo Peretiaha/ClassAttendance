@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassAttendance.DAL.Migrations
 {
     [DbContext(typeof(ClassAttendanceContext))]
-    [Migration("20191108071955_Initial")]
+    [Migration("20191203093901_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,7 +23,7 @@ namespace ClassAttendance.DAL.Migrations
 
             modelBuilder.Entity("ClassAttendance.Models.Models.EducationalInstitution", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("EducationalInstitutionId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("City");
@@ -36,7 +36,7 @@ namespace ClassAttendance.DAL.Migrations
 
                     b.Property<int>("Type");
 
-                    b.HasKey("Id");
+                    b.HasKey("EducationalInstitutionId");
 
                     b.ToTable("EducationalInstitutions");
                 });
@@ -56,7 +56,7 @@ namespace ClassAttendance.DAL.Migrations
 
             modelBuilder.Entity("ClassAttendance.Models.Models.Faculty", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("FacultyId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("DeanId");
@@ -65,28 +65,26 @@ namespace ClassAttendance.DAL.Migrations
 
                     b.Property<string>("Name");
 
-                    b.HasKey("Id");
+                    b.HasKey("FacultyId");
 
                     b.ToTable("Faculties");
                 });
 
             modelBuilder.Entity("ClassAttendance.Models.Models.Role", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("RoleId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("Name");
 
-                    b.HasKey("Id");
+                    b.HasKey("RoleId");
 
                     b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("ClassAttendance.Models.Models.Specialty", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("SpecialityId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid?>("FacultyId");
@@ -97,7 +95,7 @@ namespace ClassAttendance.DAL.Migrations
 
                     b.Property<int>("Number");
 
-                    b.HasKey("Id");
+                    b.HasKey("SpecialityId");
 
                     b.HasIndex("FacultyId");
 
@@ -109,14 +107,12 @@ namespace ClassAttendance.DAL.Migrations
 
             modelBuilder.Entity("ClassAttendance.Models.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Birthday");
 
                     b.Property<string>("Email");
-
-                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastName");
 
@@ -124,7 +120,7 @@ namespace ClassAttendance.DAL.Migrations
 
                     b.Property<string>("Password");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });

@@ -11,51 +11,49 @@ namespace ClassAttendance.DAL.Migrations
                 name: "EducationalInstitutions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
+                    EducationalInstitutionId = table.Column<Guid>(nullable: false),
                     Type = table.Column<int>(nullable: false),
                     Country = table.Column<int>(nullable: false),
-                    City = table.Column<string>(nullable: true)
+                    City = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EducationalInstitutions", x => x.Id);
+                    table.PrimaryKey("PK_EducationalInstitutions", x => x.EducationalInstitutionId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Faculties",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    FacultyId = table.Column<Guid>(nullable: false),
+                    DeanId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    DeanId = table.Column<Guid>(nullable: false)
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Faculties", x => x.Id);
+                    table.PrimaryKey("PK_Faculties", x => x.FacultyId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.RoleId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Birthday = table.Column<DateTime>(nullable: false),
@@ -64,7 +62,7 @@ namespace ClassAttendance.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,13 +79,13 @@ namespace ClassAttendance.DAL.Migrations
                         name: "FK_EducationalInstitutionFaculty_EducationalInstitutions_EducationalInstitutionId",
                         column: x => x.EducationalInstitutionId,
                         principalTable: "EducationalInstitutions",
-                        principalColumn: "Id",
+                        principalColumn: "EducationalInstitutionId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_EducationalInstitutionFaculty_Faculties_FacultyId",
                         column: x => x.FacultyId,
                         principalTable: "Faculties",
-                        principalColumn: "Id",
+                        principalColumn: "FacultyId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -95,20 +93,20 @@ namespace ClassAttendance.DAL.Migrations
                 name: "Specialties",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
+                    SpecialityId = table.Column<Guid>(nullable: false),
                     Number = table.Column<int>(nullable: false),
-                    FacultyId = table.Column<Guid>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    FacultyId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Specialties", x => x.Id);
+                    table.PrimaryKey("PK_Specialties", x => x.SpecialityId);
                     table.ForeignKey(
                         name: "FK_Specialties_Faculties_FacultyId",
                         column: x => x.FacultyId,
                         principalTable: "Faculties",
-                        principalColumn: "Id",
+                        principalColumn: "FacultyId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -126,13 +124,13 @@ namespace ClassAttendance.DAL.Migrations
                         name: "FK_UsersRoles_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id",
+                        principalColumn: "RoleId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UsersRoles_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 

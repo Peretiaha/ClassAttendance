@@ -5,8 +5,10 @@ using System.Text;
 
 namespace ClassAttendance.BLL.Interfaces
 {
-    public interface IEducationalInstitutionService : IService<EducationalInstitution>
+    interface ISpecialtyService : IService<Specialty>
     {
-        EducationalInstitution GetEducationalInstitutionById(Guid id); 
+        Specialty GetSpecialtyById(Guid id);
+
+        IEnumerable<Specialty> GetSpecialties();
     }
 }

@@ -1,5 +1,4 @@
 ﻿using ClassAttendance.Models.Enums;
-using ClassAttendance.Models.Models.Localization;
 using System;
 using System.Collections.Generic;
 
@@ -15,9 +14,9 @@ namespace ClassAttendance.Models.Models
 
         public string City { get; set; }
 
-        public IEnumerable<EducationalInstitutionFaculty> EducationalInstitutionFaculty { get; set; } 
+        public string Name { get; set; }
 
-        public IEnumerable<EducationalInstitutionTranslate> EducationalInstitutionTranslates { get; set; }
+        public IEnumerable<EducationalInstitutionFaculty> EducationalInstitutionFaculty { get; set; } 
 
         public bool IsDeleted { get; set; }
     }

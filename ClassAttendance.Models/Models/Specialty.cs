@@ -1,5 +1,4 @@
-﻿using ClassAttendance.Models.Models.Localization;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,9 +10,9 @@ namespace ClassAttendance.Models.Models
 
         public int Number { get; set; }
 
-        public Faculty Faculty { get; set; }
+        public string Name { get; set; }
 
-        public IEnumerable<SpecialtyTranslate> SpecialtyTranslates { get; set; }
+        public Faculty Faculty { get; set; }
 
         public bool IsDeleted { get; set; }
 
