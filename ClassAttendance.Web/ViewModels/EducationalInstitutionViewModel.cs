@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace ClassAttendance.Web.ViewModels
 {
