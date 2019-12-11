@@ -15,9 +15,29 @@ namespace ClassAttendance.DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ClassAttendance.Models.Models.ClassRoom", b =>
+                {
+                    b.Property<Guid>("ClassRoomId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("EducationalInstitutionId");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<int>("Number");
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("ClassRoomId");
+
+                    b.HasIndex("EducationalInstitutionId");
+
+                    b.ToTable("ClassRooms");
+                });
 
             modelBuilder.Entity("ClassAttendance.Models.Models.EducationalInstitution", b =>
                 {
@@ -39,33 +59,22 @@ namespace ClassAttendance.DAL.Migrations
                     b.ToTable("EducationalInstitutions");
                 });
 
-            modelBuilder.Entity("ClassAttendance.Models.Models.EducationalInstitutionFaculty", b =>
+            modelBuilder.Entity("ClassAttendance.Models.Models.Groupe", b =>
                 {
-                    b.Property<Guid>("FacultyId");
-
-                    b.Property<Guid>("EducationalInstitutionId");
-
-                    b.HasKey("FacultyId", "EducationalInstitutionId");
-
-                    b.HasIndex("EducationalInstitutionId");
-
-                    b.ToTable("EducationalInstitutionFaculty");
-                });
-
-            modelBuilder.Entity("ClassAttendance.Models.Models.Faculty", b =>
-                {
-                    b.Property<Guid>("FacultyId")
+                    b.Property<Guid>("GroupeId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("DeanId");
+                    b.Property<Guid>("EducationalInstitutionId");
 
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("Name");
 
-                    b.HasKey("FacultyId");
+                    b.HasKey("GroupeId");
 
-                    b.ToTable("Faculties");
+                    b.HasIndex("EducationalInstitutionId");
+
+                    b.ToTable("Groupes");
                 });
 
             modelBuilder.Entity("ClassAttendance.Models.Models.Role", b =>
@@ -78,29 +87,51 @@ namespace ClassAttendance.DAL.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new { RoleId = new Guid("88b510f1-ce1f-48ec-a39c-c2da62b41e51"), Name = "AdminGlobal" },
+                        new { RoleId = new Guid("b3de9a30-ec07-4f1b-80ee-fc14892e0182"), Name = "AdminLocal" },
+                        new { RoleId = new Guid("f4be7c9d-8999-40c6-9dbd-1e7341ebaad6"), Name = "Student" },
+                        new { RoleId = new Guid("b0c569d5-059f-4828-84f9-052cf236529f"), Name = "Parent" },
+                        new { RoleId = new Guid("19a770f7-0128-4674-a99a-da2a9fda5fb4"), Name = "Headman" }
+                    );
                 });
 
-            modelBuilder.Entity("ClassAttendance.Models.Models.Specialty", b =>
+            modelBuilder.Entity("ClassAttendance.Models.Models.Subject", b =>
                 {
-                    b.Property<Guid>("SpecialityId")
+                    b.Property<Guid>("SubjectId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("FacultyId");
+                    b.Property<Guid?>("ClassRoomId");
 
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("Number");
+                    b.Property<int>("NumberOfLesson");
 
-                    b.HasKey("SpecialityId");
+                    b.Property<Guid>("TeacherId");
 
-                    b.HasIndex("FacultyId");
+                    b.HasKey("SubjectId");
 
-                    b.HasIndex("Number")
-                        .IsUnique();
+                    b.HasIndex("ClassRoomId");
 
-                    b.ToTable("Specialties");
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Subjects");
+                });
+
+            modelBuilder.Entity("ClassAttendance.Models.Models.SubjectsGroupes", b =>
+                {
+                    b.Property<Guid>("GroupeId");
+
+                    b.Property<Guid>("SubjectId");
+
+                    b.HasKey("GroupeId", "SubjectId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("SubjectsGroupes");
                 });
 
             modelBuilder.Entity("ClassAttendance.Models.Models.User", b =>
@@ -112,6 +143,10 @@ namespace ClassAttendance.DAL.Migrations
 
                     b.Property<string>("Email");
 
+                    b.Property<Guid?>("GroupeId");
+
+                    b.Property<bool>("IsDeleted");
+
                     b.Property<string>("LastName");
 
                     b.Property<string>("Name");
@@ -119,6 +154,8 @@ namespace ClassAttendance.DAL.Migrations
                     b.Property<string>("Password");
 
                     b.HasKey("UserId");
+
+                    b.HasIndex("GroupeId");
 
                     b.ToTable("Users");
                 });
@@ -136,24 +173,51 @@ namespace ClassAttendance.DAL.Migrations
                     b.ToTable("UsersRoles");
                 });
 
-            modelBuilder.Entity("ClassAttendance.Models.Models.EducationalInstitutionFaculty", b =>
+            modelBuilder.Entity("ClassAttendance.Models.Models.ClassRoom", b =>
                 {
                     b.HasOne("ClassAttendance.Models.Models.EducationalInstitution", "EducationalInstitution")
-                        .WithMany("EducationalInstitutionFaculty")
-                        .HasForeignKey("EducationalInstitutionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany("ClassRooms")
+                        .HasForeignKey("EducationalInstitutionId");
+                });
 
-                    b.HasOne("ClassAttendance.Models.Models.Faculty", "Faculty")
-                        .WithMany("EducationalInstitutionFaculty")
-                        .HasForeignKey("FacultyId")
+            modelBuilder.Entity("ClassAttendance.Models.Models.Groupe", b =>
+                {
+                    b.HasOne("ClassAttendance.Models.Models.EducationalInstitution", "EducationalInstitution")
+                        .WithMany("Groupes")
+                        .HasForeignKey("EducationalInstitutionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ClassAttendance.Models.Models.Specialty", b =>
+            modelBuilder.Entity("ClassAttendance.Models.Models.Subject", b =>
                 {
-                    b.HasOne("ClassAttendance.Models.Models.Faculty", "Faculty")
-                        .WithMany("Specialties")
-                        .HasForeignKey("FacultyId");
+                    b.HasOne("ClassAttendance.Models.Models.ClassRoom", "ClassRoom")
+                        .WithMany()
+                        .HasForeignKey("ClassRoomId");
+
+                    b.HasOne("ClassAttendance.Models.Models.User", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ClassAttendance.Models.Models.SubjectsGroupes", b =>
+                {
+                    b.HasOne("ClassAttendance.Models.Models.Groupe", "Groupe")
+                        .WithMany("SubjectsGroupes")
+                        .HasForeignKey("GroupeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ClassAttendance.Models.Models.Subject", "Subject")
+                        .WithMany("SubjectsGroupes")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ClassAttendance.Models.Models.User", b =>
+                {
+                    b.HasOne("ClassAttendance.Models.Models.Groupe", "Groupe")
+                        .WithMany("Students")
+                        .HasForeignKey("GroupeId");
                 });
 
             modelBuilder.Entity("ClassAttendance.Models.Models.UsersRoles", b =>

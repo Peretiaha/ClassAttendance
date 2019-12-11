@@ -16,8 +16,5 @@ namespace ClassAttendance.Web.ViewModels
 
         public string City { get; set; }
 
-        public IEnumerable<SelectListItem> ListOfFacultes { get; set; }
-
-        public IEnumerable<Guid> SelectedFaculty { get; set; }
     }
 }

@@ -1,0 +1,70 @@
+﻿@model ClassAttendance.Web.ViewModels.GroupViewModel
+
+@{
+    ViewData["Title"] = "GetAll";
+}
+
+<h2>GetAll</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Group" asp-action="GetAll" id="form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EducationalInstitutions" class="control-label"></label>
+                @Html.DropDownListFor(x=>x.SelectedEducationalInstitution, Model.EducationalInstitutions, "Select your educational institution", new { id = "unit-select" ,onchange="sendCountry()"})
+                <span asp-validation-for="EducationalInstitutions" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</div>
+@if (Model.Groupes != null)
+{
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SelectedEducationalInstitution)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Groupes)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
+                    @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
+                    @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+
+<script>
+    function sendCountry() {
+        var selectedCountry = document.getElementById("unit-select");
+        var strUser = selectedCountry.options[selectedCountry.selectedIndex].value;
+        let item = {
+            SelectedEducationalInstitution: +strUser
+        };
+        let form = document.getElementById("form");
+        form.submit();
+    }
+
+</script>

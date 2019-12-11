@@ -10,6 +10,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Globalization;
+using System.Text;
+using AutoMapper;
+using ClassAttendance.BLL.Interfaces;
+using ClassAttendance.BLL.Services;
+using ClassAttendance.Web.Authorization;
+using ClassAttendance.Web.Mapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ClassAttendance.Web
 {
@@ -22,21 +33,90 @@ namespace ClassAttendance.Web
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            var apiAuthSettings = AddApiAuthSettings(services);
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            
+            services.AddMemoryCache();
 
-            var connection = @"Server=INSPIRION\IT_SHNIKSQL;Database=ClassAttendanceDb;Trusted_Connection=True;ConnectRetryCount=0";
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en"),
+                    new CultureInfo("ru")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture("ru");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+
+            var mappingConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+            //services.AddPaging(options =>
+            //{
+            //    options.ViewName = "Bootstrap4";
+            //    options.HtmlIndicatorDown = " <span>&darr;</span>";
+            //    options.HtmlIndicatorUp = " <span>&uarr;</span>";
+            //});
+
+            var connection = @"Server=EPUAKHAW0861;Database=ClassAttendanceDb;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<ClassAttendanceContext>(options => options.UseSqlServer(connection));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+
+            var cookieAuthSettings = AddCookieAuthSettings(services);
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+                .AddCookie(options =>
+                {
+                    options.SlidingExpiration = true;
+                    options.LoginPath = "/Account/Login";
+                    options.AccessDeniedPath = "/Account/AccessDenied";
+                    options.ExpireTimeSpan = TimeSpan.FromSeconds(cookieAuthSettings.ExpirationTimeInSeconds);
+                }).AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        RequireExpirationTime = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(apiAuthSettings.Secret)),
+                        ValidIssuer = apiAuthSettings.Issuer,
+                        ValidateIssuer = true,
+                        ValidateAudience = false
+                    };
+                });
+
 
             var builder = new ContainerBuilder();
-            builder.RegisterModule<InfrastructureContainerConfigurator>();
+            
+            builder.RegisterModule(new InfrastructureContainerConfigurator());
+
+            services
+                .AddSingleton<ITokenFactory, JwtTokenFactory>()
+                .AddTransient<IUserService, UserService>();
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddDataAnnotationsLocalization(options => {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(SharedResource));
+                })
+                .AddViewLocalization();
+
             builder.Populate(services);
             var container = builder.Build();
             return container.Resolve<IServiceProvider>();
@@ -50,15 +130,42 @@ namespace ClassAttendance.Web
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Views/Errors");
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
-            app.UseMvc();
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
+            app.UseStaticFiles();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
+
+        private ApiAuthSettings AddApiAuthSettings(IServiceCollection services)
+        {
+            var authSettingsSection = Configuration.GetSection(nameof(ApiAuthSettings));
+            services.Configure<ApiAuthSettings>(authSettingsSection);
+
+            return authSettingsSection.Get<ApiAuthSettings>();
+        }
+
+        private CookieAuthSettings AddCookieAuthSettings(IServiceCollection services)
+        {
+            var settingsSection = Configuration.GetSection(nameof(CookieAuthSettings));
+            services.Configure<CookieAuthSettings>(settingsSection);
+
+            return settingsSection.Get<CookieAuthSettings>();
+        }
+
     }
 }

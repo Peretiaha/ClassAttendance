@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ClassAttendance.Models.Enums;
 
 namespace ClassAttendance.BLL.Services
 {
@@ -44,6 +45,16 @@ namespace ClassAttendance.BLL.Services
         public EducationalInstitution GetEducationalInstitutionById(Guid id)
         {
             return _unitOfWork.GetRepository<EducationalInstitution>().GetSingle(x=>x.EducationalInstitutionId == id);
+        }
+
+        public IEnumerable<EducationalInstitution> GetEducationalInstitutionsByCountry(Country country)
+        {
+            return _unitOfWork.GetRepository<EducationalInstitution>().GetMany(x => x.Country == country);
+        }
+
+        public IEnumerable<EducationalInstitution> GetAllEducationalInstitutions()
+        {
+            return _unitOfWork.GetRepository<EducationalInstitution>().GetMany();
         }
     }
 }

@@ -1,0 +1,13 @@
+﻿
+@using (Html.BeginForm("LogoutAsync", "Account", FormMethod.Post, new { id = "logoutForm", @class = "nav-item" }))
+{
+    @if (User.Identity.IsAuthenticated)
+    {
+        <li><a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">Logout</a></li>
+    }
+
+    else
+    {
+        <li >@Html.ActionLink("Sign in", "LoginAsync", "Account", null, new { @class = "nav-link", id = "loginLink" })</li>
+    }
+}

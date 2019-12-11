@@ -18,7 +18,12 @@ namespace ClassAttendance.Models.Models
 
         public string Password { get; set; }
 
-        public IEnumerable<UsersRoles> UsersRoles { get; set; }
+        public bool IsDeleted { get; set; }
 
+        public Groupe Groupe { get; set; }
+
+        public Guid GroupeId { get; set; }
+
+        public IEnumerable<UsersRoles> UsersRoles { get; set; }
     }
 }

@@ -12,24 +12,26 @@ namespace ClassAttendance.DAL.Context
 
         public DbSet<EducationalInstitution> EducationalInstitutions { get; set; }
 
-        public DbSet<EducationalInstitutionFaculty> EducationalInstitutionFaculty { get; set; }
-
-        public DbSet<Faculty> Faculties { get; set; }
-
-        public DbSet<Specialty> Specialties { get; set; }
-
         public DbSet<User> Users { get; set; }
 
         public DbSet<UsersRoles> UsersRoles { get; set; }
 
         public DbSet<Role> Roles { get; set; }
 
+        public DbSet<Subject> Subjects { get; set; }
+
+        public DbSet<ClassRoom> ClassRooms { get; set; }
+
+        public DbSet<SubjectsGroupes> SubjectsGroupes { get; set; }
+
+        public  DbSet<Groupe> Groupes { get; set; }
+
       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new SpecialityConfiguration());
-            modelBuilder.ApplyConfiguration(new EducationalInstitutionFacultyConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UsersRolesConfiguration());
+            modelBuilder.ApplyConfiguration(new SubjectsGroupesConfiguration());
         }
     }
 }

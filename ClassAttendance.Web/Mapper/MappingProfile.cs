@@ -10,7 +10,10 @@ namespace ClassAttendance.Web.Mapper
     {
         public MappingProfile()
         {
-            
+            CreateMap<EducationalInstitution, EducationalInstitutionViewModel>().ReverseMap();
+            CreateMap<LoginViewModel, User>().ReverseMap();
+            CreateMap<RegisterViewModel, User>().ForMember(x=>x.GroupeId, w=>w.MapFrom(x=>x.SelectedGroupe)).ReverseMap();
+            CreateMap<GroupViewModel, Groupe>().ForMember(x=>x.EducationalInstitutionId, w=>w.MapFrom(x=>x.SelectedEducationalInstitution)).ReverseMap();
 
         }
     }

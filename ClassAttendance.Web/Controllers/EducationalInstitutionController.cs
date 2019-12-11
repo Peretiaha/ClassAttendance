@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ClassAttendance.BLL.Interfaces;
+using ClassAttendance.Models.Enums;
 using ClassAttendance.Models.Models;
 using ClassAttendance.Web.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +15,6 @@ namespace ClassAttendance.Web.Controllers
     public class EducationalInstitutionController : Controller
     {
         private readonly IEducationalInstitutionService _educationalInstitutionService;
-        private readonly IFacultyService _facultyService;
         private readonly IMapper _mapper;
         
         public EducationalInstitutionController(IEducationalInstitutionService educationalInstitutionService, IMapper mapper)
@@ -35,9 +35,22 @@ namespace ClassAttendance.Web.Controllers
         {
             var educationalInstitution = _mapper.Map<EducationalInstitutionViewModel, EducationalInstitution>(educationalViewModel);
             _educationalInstitutionService.Create(educationalInstitution);
-            return View();
+            return RedirectToAction("GetLocalEI");
         }
 
+        [HttpGet("EIs")]
+        public IActionResult GetLocalEI()
+        {
+            var localEI = new LoaclEducationalInstitutionViewModel();
+            return View(localEI);
+        }
 
+        [HttpPost("EIs")]
+        public IActionResult GetLocalEI(Country country)
+        {
+            var localEI = new LoaclEducationalInstitutionViewModel();
+            localEI.EducationalInstitutions = _educationalInstitutionService.GetEducationalInstitutionsByCountry(country);
+            return View(localEI);
+        }
     }
 }
