@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="SelectedEducationalInstitution" class="control-label"></label>
-                @Html.DropDownListFor(x=>x.SelectedEducationalInstitution, Model.EducationalInstitutions, "Select your educational institution")
+                @Html.DropDownListFor(x=>x.SelectedEducationalInstitution, Model.EducationalInstitutions, "Select your educational institution", new {@class="btn btn-secondary dropdown-toggle"})
                 <span asp-validation-for="SelectedEducationalInstitution" class="text-danger"></span>
             </div>
             <div class="form-group">

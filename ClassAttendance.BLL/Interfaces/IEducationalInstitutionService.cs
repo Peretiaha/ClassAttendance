@@ -14,5 +14,6 @@ namespace ClassAttendance.BLL.Interfaces
 
         IEnumerable<EducationalInstitution> GetAllEducationalInstitutions();
 
+        EducationalInstitution GetEIIdByGroupId(Guid id);
     }
 }

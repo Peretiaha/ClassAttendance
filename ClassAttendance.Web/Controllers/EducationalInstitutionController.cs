@@ -17,7 +17,7 @@ namespace ClassAttendance.Web.Controllers
         private readonly IEducationalInstitutionService _educationalInstitutionService;
         private readonly IMapper _mapper;
         
-        public EducationalInstitutionController(IEducationalInstitutionService educationalInstitutionService, IMapper mapper)
+        public EducationalInstitutionController(IEducationalInstitutionService educationalInstitutionService,IMapper mapper)
         {
             _educationalInstitutionService = educationalInstitutionService;
             _mapper = mapper;
@@ -51,6 +51,42 @@ namespace ClassAttendance.Web.Controllers
             var localEI = new LoaclEducationalInstitutionViewModel();
             localEI.EducationalInstitutions = _educationalInstitutionService.GetEducationalInstitutionsByCountry(country);
             return View(localEI);
+        }
+
+        [HttpGet("EI/edit")]
+        public IActionResult Edit(Guid id)
+        {
+            var eI = _mapper.Map<EducationalInstitution, EducationalInstitutionViewModel>(_educationalInstitutionService.GetEducationalInstitutionById(id));
+            return View(eI);
+        }
+
+        [HttpPost("EI/edit")]
+        public IActionResult Edit(EducationalInstitutionViewModel educationalInstitutionViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var educationalInstitution = _mapper.Map<EducationalInstitutionViewModel, EducationalInstitution>(educationalInstitutionViewModel);
+                _educationalInstitutionService.Edit(educationalInstitution);
+                return RedirectToAction("GetLocalEI");
+            }
+
+            return View(educationalInstitutionViewModel);
+        }
+
+        [HttpGet("EI/delete")]
+        public IActionResult Delete(Guid id)
+        {
+            _educationalInstitutionService.Delete(id);
+            return RedirectToAction("GetLocalEI");
+        }
+
+        [HttpGet("EI/details")]
+        public IActionResult Details(Guid id)
+        {
+            var educationalInstViewModel = 
+                _mapper.Map<EducationalInstitution, EducationalInstitutionViewModel>(_educationalInstitutionService.GetEducationalInstitutionById(id));
+            
+            return View(educationalInstViewModel);
         }
     }
 }

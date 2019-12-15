@@ -15,11 +15,9 @@ namespace ClassAttendance.Models.Models
 
         public Guid TeacherId { get; set; }
 
-        public ClassRoom ClassRoom { get; set; }
-
         public User Teacher { get; set; }
 
-        public IEnumerable<SubjectsGroupes> SubjectsGroupes { get; set; }
+        public IEnumerable<UsersSubjects> UsersSubjects { get; set; }
 
         public bool IsDeleted { get; set; }
     }

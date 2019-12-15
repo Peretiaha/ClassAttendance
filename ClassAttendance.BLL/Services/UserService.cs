@@ -84,6 +84,11 @@ namespace ClassAttendance.BLL.Services
             user.UsersRoles = entity.UsersRoles;
             user.Name = entity.Name;
             user.Birthday = entity.Birthday;
+            user.GroupId = entity.GroupId;
+            if (entity.Photo != null)
+            {
+                user.Photo = entity.Photo;
+            }
             repository.Update(user);
             _unitOfWork.Commit();
         }

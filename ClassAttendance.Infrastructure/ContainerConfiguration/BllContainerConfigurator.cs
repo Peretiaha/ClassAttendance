@@ -9,7 +9,6 @@ namespace ClassAttendance.Infrastructure.ContainerConfiguration
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ClassRoomService>().As<IClassRoomService>();
             builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<RoleService>().As<IRoleService>();
             builder.RegisterType<GroupService>().As<IGroupService>();

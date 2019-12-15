@@ -31,6 +31,7 @@ namespace ClassAttendance.BLL.Services
         {
             var repository = _unitOfWork.GetRepository<EducationalInstitution>();
             var entity = repository.GetSingle(x => x.EducationalInstitutionId == entityId);
+            entity.IsDeleted = true;
             Edit(entity );
         }
 
@@ -49,12 +50,18 @@ namespace ClassAttendance.BLL.Services
 
         public IEnumerable<EducationalInstitution> GetEducationalInstitutionsByCountry(Country country)
         {
-            return _unitOfWork.GetRepository<EducationalInstitution>().GetMany(x => x.Country == country);
+            return _unitOfWork.GetRepository<EducationalInstitution>().GetMany(x => x.Country == country && x.IsDeleted == false);
         }
 
         public IEnumerable<EducationalInstitution> GetAllEducationalInstitutions()
         {
             return _unitOfWork.GetRepository<EducationalInstitution>().GetMany();
+        }
+
+        public EducationalInstitution GetEIIdByGroupId(Guid id)
+        {
+            return _unitOfWork.GetRepository<EducationalInstitution>()
+                .GetSingle(x => x.Groups.Any(w => w.GroupId == id));
         }
     }
 }

@@ -5,14 +5,14 @@ using ClassAttendance.Models.Models;
 
 namespace ClassAttendance.BLL.Interfaces
 {
-    public interface IGroupService : IService<Groupe>
+    public interface IGroupService : IService<Group>
     {
-        Groupe GetGroupById(Guid id);
+        Group GetGroupById(Guid id);
 
-        IEnumerable<Groupe> GetAllGroups();
+        IEnumerable<Group> GetAllGroups();
 
-        IEnumerable<Groupe> GetAllByEIId(Guid id);
+        IEnumerable<Group> GetAllByEIId(Guid id);
 
-        bool IsExistedByName(string name);
+        bool IsExistedByNameAndUniverId(string name, Guid univerId);
     }
 }

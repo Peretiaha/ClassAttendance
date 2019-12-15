@@ -20,45 +20,45 @@ namespace ClassAttendance.BLL.Services
             _mapper = mapper;
         }
 
-        public void Create(Groupe entity)
+        public void Create(Group entity)
         {
-            _unitOfWork.GetRepository<Groupe>().Insert(entity);
+            _unitOfWork.GetRepository<Group>().Insert(entity);
             _unitOfWork.Commit();
         }
 
-        public void Edit(Groupe entity)
+        public void Edit(Group entity)
         {
-            _unitOfWork.GetRepository<Groupe>().Update(entity);
+            _unitOfWork.GetRepository<Group>().Update(entity);
             _unitOfWork.Commit();
         }
 
         public void Delete(Guid entityId)
         {
-            var classRoom = _unitOfWork.GetRepository<Groupe>().GetSingle(x => x.GroupeId == entityId);
+            var classRoom = _unitOfWork.GetRepository<Group>().GetSingle(x => x.GroupId == entityId);
             classRoom.IsDeleted = true;
             Edit(classRoom);
         }
 
-        public Groupe GetGroupById(Guid id)
+        public Group GetGroupById(Guid id)
         {
-            return _unitOfWork.GetRepository<Groupe>().GetSingle(x => x.GroupeId == id);
+            return _unitOfWork.GetRepository<Group>().GetSingle(x => x.GroupId == id);
         }
 
-        public IEnumerable<Groupe> GetAllGroups()
+        public IEnumerable<Group> GetAllGroups()
         {
-            return _unitOfWork.GetRepository<Groupe>().GetMany(null, null, x=>x.SubjectsGroupes, x=>x.Students);
+            return _unitOfWork.GetRepository<Group>().GetMany(null, null, x=>x.Students);
         }
 
-        public IEnumerable<Groupe> GetAllByEIId(Guid id)
+        public IEnumerable<Group> GetAllByEIId(Guid id)
         {
-            return _unitOfWork.GetRepository<Groupe>()
-                .GetMany(x => x.EducationalInstitution.EducationalInstitutionId == id, null,
-                    x => x.EducationalInstitution, x=>x.SubjectsGroupes);
+            return _unitOfWork.GetRepository<Group>()
+                .GetMany(x => x.EducationalInstitution.EducationalInstitutionId == id && x.IsDeleted == false, null,
+                    x => x.EducationalInstitution);
         }
 
-        public bool IsExistedByName(string name)
+        public bool IsExistedByNameAndUniverId(string name, Guid univerId)
         {
-            var groupe = _unitOfWork.GetRepository<Groupe>().GetMany(x => x.Name.ToLower() == name.ToLower());
+            var groupe = _unitOfWork.GetRepository<Group>().GetMany(x => x.Name.ToLower() == name.ToLower() && x.EducationalInstitutionId == univerId);
             if (groupe.Any())
             {
                 return false;

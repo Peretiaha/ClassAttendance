@@ -8,6 +8,8 @@ namespace ClassAttendance.Web.ViewModels
 {
     public class EducationalInstitutionViewModel
     {
+        public Guid EducationalInstitutionId { get; set; }
+
         public string Name { get; set; }
 
         public EducationalInstitutionType Type { get; set; }
@@ -16,5 +18,5 @@ namespace ClassAttendance.Web.ViewModels
 
         public string City { get; set; }
 
-    }
+   }
 }

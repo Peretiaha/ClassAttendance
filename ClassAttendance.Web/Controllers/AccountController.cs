@@ -21,13 +21,55 @@ namespace ClassAttendance.Web.Controllers
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
         private readonly IGroupService _groupService;
+        private readonly IEducationalInstitutionService _educationalInstitutionService;
 
-        public AccountController(IUserService userService, IRoleService roleService, IGroupService groupService, IMapper mapper)
+        public AccountController(IUserService userService, IRoleService roleService, IGroupService groupService, IEducationalInstitutionService educationalInstitutionService, IMapper mapper)
         {
             _userService = userService;
+            _educationalInstitutionService = educationalInstitutionService;
             _groupService = groupService;
             _roleService = roleService;
             _mapper = mapper;
+        }
+
+        [Authorize]
+        [HttpGet("user/account")]
+        public IActionResult Account()
+        {
+            var userId = Guid.Parse(User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            var user = _userService.GetUserById(userId);
+            var userViewModel = _mapper.Map<User, UserViewModel>(user);
+            userViewModel.Group = _groupService.GetGroupById(user.GroupId);
+            userViewModel.EducationalInstitution =
+                _educationalInstitutionService.GetEIIdByGroupId(user.GroupId);
+            return View(userViewModel);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult EditProfile()
+        {
+            var userId = Guid.Parse(User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            var user = _userService.GetUserById(userId);
+            var editUserViewModel = _mapper.Map<User, EditUserViewModel>(user);
+            editUserViewModel.Roles = _roleService
+                .GetAllRoles()
+                .Select(x => new SelectListItem(x.Name, x.RoleId.ToString()));
+            editUserViewModel.Groups = _groupService.GetAllGroups().Select(x => new SelectListItem(x.Name, x.GroupId.ToString()));
+            return View(editUserViewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditProfile(EditUserViewModel editUserViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _mapper.Map<EditUserViewModel, User>(editUserViewModel);
+                _userService.Edit(user);
+                return RedirectToAction("Account");
+            }
+            return View(editUserViewModel);
         }
 
         [HttpPost]
@@ -79,7 +121,7 @@ namespace ClassAttendance.Web.Controllers
             registerViewModel.Roles = _roleService
                 .GetAllRoles()
                 .Select(x => new SelectListItem(x.Name, x.RoleId.ToString()));
-            registerViewModel.Groupes = _groupService.GetAllGroups().Select(x=> new SelectListItem(x.Name, x.GroupeId.ToString()));
+            registerViewModel.Groups = _groupService.GetAllGroups().Select(x=> new SelectListItem(x.Name, x.GroupId.ToString()));
             return View(registerViewModel);
         }
 
