@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ClassAttendance.Web.ViewModels
@@ -39,8 +40,10 @@ namespace ClassAttendance.Web.ViewModels
 
         public IEnumerable<Guid> SelectedRoles { get; set; }
 
-        public IEnumerable<SelectListItem> Groupes { get; set; }
+        public IEnumerable<SelectListItem> Groups { get; set; }
 
-        public Guid SelectedGroupe { get; set; }
+        public Guid SelectedGroup { get; set; }
+
+        public IFormFile Photo { get; set; }
     }
 }

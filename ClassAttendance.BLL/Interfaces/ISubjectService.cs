@@ -8,8 +8,5 @@ namespace ClassAttendance.BLL.Interfaces
     public interface ISubjectService : IService<Subject>
     {
         Subject GetSubjectById(Guid id);
-
-        IEnumerable<Subject> GetAllSubjectsByGroupeId(Guid groupeId);
-
     }
 }

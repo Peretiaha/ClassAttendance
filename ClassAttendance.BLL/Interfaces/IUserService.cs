@@ -14,5 +14,6 @@ namespace ClassAttendance.BLL.Interfaces
         User GetUserById(Guid userId);
 
         User GetUserByEmail(string email);
+
     }
 }

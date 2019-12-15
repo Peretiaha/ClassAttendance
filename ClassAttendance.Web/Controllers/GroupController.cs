@@ -36,11 +36,13 @@ namespace ClassAttendance.Web.Controllers
         [HttpPost("group/new")]
         public IActionResult Create(GroupViewModel groupViewModel)
         {
-            if (ModelState.IsValid && _groupService.IsExistedByName(groupViewModel.Name))
+            if (ModelState.IsValid && _groupService.IsExistedByNameAndUniverId(groupViewModel.Name, groupViewModel.SelectedEducationalInstitution))
             {
-                _groupService.Create(_mapper.Map<GroupViewModel, Groupe>(groupViewModel));
+                _groupService.Create(_mapper.Map<GroupViewModel, Group>(groupViewModel));
                 return RedirectToAction("GetAll");
             }
+
+            groupViewModel = SetEducationalInst(groupViewModel);
 
             return View(groupViewModel);
         }
@@ -51,6 +53,7 @@ namespace ClassAttendance.Web.Controllers
             var groupsViewModel = new GroupViewModel();
             groupsViewModel.EducationalInstitutions = _educationalInstitutionService.GetAllEducationalInstitutions()
                 .Select(x => new SelectListItem(x.Name, x.EducationalInstitutionId.ToString()));
+
             return View(groupsViewModel);
         }
 
@@ -58,9 +61,46 @@ namespace ClassAttendance.Web.Controllers
         public IActionResult GetAll(GroupViewModel groupViewModel)
         {
             groupViewModel.Groupes = _groupService.GetAllByEIId(groupViewModel.SelectedEducationalInstitution);
-            groupViewModel.EducationalInstitutions = _educationalInstitutionService.GetAllEducationalInstitutions()
-                .Select(x => new SelectListItem(x.Name, x.EducationalInstitutionId.ToString()));
+            groupViewModel = SetEducationalInst(groupViewModel);
+
             return View(groupViewModel);
+        }
+
+        [HttpGet("group/edit")]
+        public IActionResult Edit(Guid id)
+        {
+            var group = _mapper.Map<Group, GroupViewModel>(_groupService.GetGroupById(id));
+            group = SetEducationalInst(group);
+
+            return View(group);
+        }
+
+        [HttpPost("group/edit")]
+        public IActionResult Edit(GroupViewModel groupViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var group = _mapper.Map<GroupViewModel, Group>(groupViewModel);
+                _groupService.Edit(group);
+                return RedirectToAction("GetAll");
+            }
+
+            return View(groupViewModel);
+        }
+
+        [HttpGet("group/delete")]
+        public IActionResult Delete(Guid id)
+        {
+            _groupService.Delete(id);
+            return RedirectToAction("GetAll");
+        }
+
+        private GroupViewModel SetEducationalInst(GroupViewModel groupView)
+        {
+            groupView.EducationalInstitutions = _educationalInstitutionService.GetAllEducationalInstitutions()
+                .Select(x => new SelectListItem(x.Name, x.EducationalInstitutionId.ToString()));
+
+            return groupView;
         }
     }
 }

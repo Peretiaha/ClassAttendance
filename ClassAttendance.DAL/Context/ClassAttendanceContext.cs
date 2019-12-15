@@ -20,18 +20,16 @@ namespace ClassAttendance.DAL.Context
 
         public DbSet<Subject> Subjects { get; set; }
 
-        public DbSet<ClassRoom> ClassRooms { get; set; }
+        public DbSet<UsersSubjects> SubjectsGroups { get; set; }
 
-        public DbSet<SubjectsGroupes> SubjectsGroupes { get; set; }
+        public  DbSet<Group> Groups { get; set; }
 
-        public  DbSet<Groupe> Groupes { get; set; }
 
-      
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UsersRolesConfiguration());
-            modelBuilder.ApplyConfiguration(new SubjectsGroupesConfiguration());
+            modelBuilder.ApplyConfiguration(new UsersSubjectsConfiguration());
         }
     }
 }

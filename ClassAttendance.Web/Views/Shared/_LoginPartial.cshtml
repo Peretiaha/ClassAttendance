@@ -3,11 +3,11 @@
 {
     @if (User.Identity.IsAuthenticated)
     {
-        <li><a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">Logout</a></li>
+        <li nav-item><a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link">Logout</a></li>
     }
 
     else
     {
-        <li >@Html.ActionLink("Sign in", "LoginAsync", "Account", null, new { @class = "nav-link", id = "loginLink" })</li>
+        <li nav-item>@Html.ActionLink("Sign in", "LoginAsync", "Account", null, new { @class = "nav-link", id = "loginLink" })</li>
     }
 }

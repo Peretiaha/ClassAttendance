@@ -6,11 +6,10 @@
 
 <h2>Registration</h2>
 
-<h4>RegisterViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Registration">
+        <form asp-action="Registration" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -44,8 +43,12 @@
             </div>
             <div class="form-group">
                 @Html.DisplayName("Select your group")
-                @Html.DropDownListFor(x => x.SelectedGroupe, Model.Groupes, "Select publisher", new { @class = "form-control" })
-                <span asp-validation-for="Groupes" class="text-danger"></span>
+                @Html.DropDownListFor(x => x.SelectedGroup, Model.Groups, "Select your group", new { @class = "form-control" })
+                <span asp-validation-for="Groups" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @Html.Display("Load your photo")
+                <input asp-for="Photo" type="file" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

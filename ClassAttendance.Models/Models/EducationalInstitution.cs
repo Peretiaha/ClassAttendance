@@ -18,8 +18,6 @@ namespace ClassAttendance.Models.Models
 
         public bool IsDeleted { get; set; }
 
-        public IEnumerable<Groupe> Groupes { get; set; }
-
-        public IEnumerable<ClassRoom> ClassRooms { get; set; }
+        public IEnumerable<Group> Groups { get; set; }
     }
 }
