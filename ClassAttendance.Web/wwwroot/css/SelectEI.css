@@ -1,0 +1,12 @@
+﻿body {
+}
+
+.ei {
+    height: 250px;
+    background-image: url('../images/univer.jpg');
+    background-size: cover;
+}
+
+.text {
+    text-align: center;
+}

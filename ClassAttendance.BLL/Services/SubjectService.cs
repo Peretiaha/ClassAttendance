@@ -45,5 +45,10 @@ namespace ClassAttendance.BLL.Services
         {
             return _unitOfWork.GetRepository<Subject>().GetSingle(x => x.SubjectId == id);
         }
+
+        public IEnumerable<Subject> GetAllByEducationalInstitutionId(Guid id)
+        {
+            return _unitOfWork.GetRepository<Subject>().GetMany(x => x.EducationalInstitutionId == id);
+        }
     }
 }

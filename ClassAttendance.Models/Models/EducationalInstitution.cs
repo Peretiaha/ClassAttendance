@@ -19,5 +19,7 @@ namespace ClassAttendance.Models.Models
         public bool IsDeleted { get; set; }
 
         public IEnumerable<Group> Groups { get; set; }
+
+        public IEnumerable<Subject> Subjects { get; set; }
     }
 }

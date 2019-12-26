@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ClassAttendance.BLL.Dto;
 using ClassAttendance.Models.Models;
 
 namespace ClassAttendance.BLL.Interfaces
@@ -15,5 +16,10 @@ namespace ClassAttendance.BLL.Interfaces
 
         User GetUserByEmail(string email);
 
+        IEnumerable<User> GetTeachersByEIId(Guid eIId);
+
+        IEnumerable<User> GetAllUsersByGroupId(Guid groupId);
+
+        IEnumerable<User> FilterUsers(FilterDto filterDto);
     }
 }

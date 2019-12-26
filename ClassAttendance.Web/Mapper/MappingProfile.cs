@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using ClassAttendance.BLL.Dto;
 
 namespace ClassAttendance.Web.Mapper
 {
@@ -15,38 +16,36 @@ namespace ClassAttendance.Web.Mapper
             CreateMap<EducationalInstitution, EducationalInstitutionViewModel>().ReverseMap();
             CreateMap<LoginViewModel, User>().ReverseMap();
             CreateMap<RegisterViewModel, User>().ForMember(x=>x.GroupId, w=>w.MapFrom(x=>x.SelectedGroup))
-                .ForMember(x=>x.Photo, w=>w.Ignore())
-                .AfterMap((registerViewModel, user) =>
-                {
-                    byte[] imageData = null;
-                    using (var binaryReader = new BinaryReader(registerViewModel.Photo.OpenReadStream()))
-                    {
-                        imageData = binaryReader.ReadBytes((int)registerViewModel.Photo.Length);
-                    }
-                    user.Photo = imageData;
-                }).ReverseMap();
+                .ForMember(x=>x.Photo, w=>w.Ignore()).ReverseMap();
 
             CreateMap<EditUserViewModel, User>().ForMember(x => x.GroupId, w => w.MapFrom(x => x.SelectedGroup))
                 .ForMember(x => x.Photo, w => w.Ignore())
-                .AfterMap((registerViewModel, user) =>
+                .AfterMap((edituser, user) =>
                 {
-                    if (registerViewModel.Photo != null)
+                    var list = new List<UsersSubjects>(); 
+                    foreach (var item in edituser.SelectedSubjects)
                     {
-                        byte[] imageData = null;
-                        using (var binaryReader = new BinaryReader(registerViewModel.Photo.OpenReadStream()))
+                        list.Add(new UsersSubjects()
                         {
-                            imageData = binaryReader.ReadBytes((int) registerViewModel.Photo.Length);
-                        }
-
-                        user.Photo = imageData;
+                            SubjectId = item,
+                            UserId = user.UserId
+                        });
                     }
+
+                    user.UsersSubjects = list;
                 });
+
+                
             CreateMap<User, EditUserViewModel>().ForMember(x=>x.Photo, w=>w.Ignore());
             CreateMap<GroupViewModel, Group>().ForMember(x=>x.EducationalInstitutionId, w=>w.MapFrom(x=>x.SelectedEducationalInstitution)).ReverseMap();
             CreateMap<User, UserViewModel>()
                 .ForMember(x=>x.SelectedGroupe, w=>w.MapFrom(x=>x.GroupId))
                 .ReverseMap();
 
+            CreateMap<SubjectViewModel, Subject>()
+                .ForMember(x => x.TeacherId, m => m.MapFrom(x => x.SelectedTeacher)).ReverseMap();
+
+            CreateMap<FilterViewModel, FilterDto>().ReverseMap();
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using ClassAttendance.Web
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> SharedResource
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -16,37 +20,39 @@
     <link href="~/css/site.css" rel="stylesheet" />
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" asp-controller="Home" asp-action="Index">Home</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                @*<li class="nav-item active">
-            <a asp-controller="Home" asp-action="Index" class="nav-link">Home <span class="sr-only"></span></a>
-        </li>*@
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="EducationalInstitution" asp-action="GetLocalEI">Educational Institutions</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Group" asp-action="GetAll">Groups</a>
-                </li>
-                @if (User.Identity.IsAuthenticated)
-                {
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">@SharedResource["Home"]</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    @*<li class="nav-item active">
+                            <a asp-controller="Home" asp-action="Index" class="nav-link">Home <span class="sr-only"></span></a>
+                        </li>*@
                     <li class="nav-item">
-                <a asp-controller="Account" asp-action="Account" class="nav-link">Profile <span class="sr-only"></span></a>
-            </li>
-                }
-                @Html.Partial("_LoginPartial")
-            </ul>
+                        <a class="nav-link" asp-controller="EducationalInstitution" asp-action="GetLocalEI">@SharedResource["EI"]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Group" asp-action="GetAll">@SharedResource["Groups"]</a>
+                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a asp-controller="Account" asp-action="Account" class="nav-link">@SharedResource["Profile"] <span class="sr-only"></span></a>
+                        </li>
+                    }
+                    @Html.Partial("_LoginPartial")
+                </ul>
+
+                    @await Html.PartialAsync("_SetLocal")
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
 
-<div class="container body-content">
+    <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>

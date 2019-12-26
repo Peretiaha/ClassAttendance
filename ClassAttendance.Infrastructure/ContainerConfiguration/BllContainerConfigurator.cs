@@ -12,8 +12,8 @@ namespace ClassAttendance.Infrastructure.ContainerConfiguration
             builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<RoleService>().As<IRoleService>();
             builder.RegisterType<GroupService>().As<IGroupService>();
-            builder.RegisterType<EducationalInstitutionService>().As<IEducationalInstitutionService>();
-        }
+            builder.RegisterType<SubjectService>().As<ISubjectService>();
+            builder.RegisterType<EducationalInstitutionService>().As<IEducationalInstitutionService>();}
 
     }
 }

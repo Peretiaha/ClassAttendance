@@ -1,0 +1,111 @@
+﻿@using ClassAttendance.Models.Enums
+@using ClassAttendance.Web
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ClassAttendance.Web.ViewModels.FilterUserViewModel
+@inject IHtmlLocalizer<SharedResource> SharedResource
+
+<main style="padding-top: 3%;">
+    <link href="~/css/UserFilter.css" rel="stylesheet" />
+    <div class="cart">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-8">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h2 class="large-title">@SharedResource["Students"]</h2>
+                    </div>
+                    <div id="games">
+                        <div class="row">
+                            @foreach (var item in Model.Users)
+                            {
+                                <div class="game-item col-12 col-md-6 col-lg-4 col-xl-3">
+                                    <div class="mb-3 px-0 d-flex position-relative">
+                                        <div class="image-fit-wrapper"></div>
+                                        @if (item.Photo.Length != 0)
+                                        {
+                                            <img class="image-fit" src="data:image/jpeg;base64,@(Convert.ToBase64String(item.Photo))" />
+                                        }
+                                        else
+                                        {
+                                            <img class="image-fit" src="~/images/user.jpg" />
+                                        }
+                                    </div>
+                                    @Html.ActionLink(item.Name, "Account", "Account", new { userId = item.UserId }, new { @class = "font-weight-bold text-dark" })
+                                    <div>
+                                        <span>@item.Name  @item.Lastname</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col p-md-1 p-lg-2">
+                    <h2 class="large-title">@SharedResource["Filter"]</h2>
+                    <div class="filters p-3 p-lg-4">
+                        <form asp-action="Details" id ="parse-me">
+                            <input type="search" asp-for="FilterViewModel.SearchName" class="search" placeholder="@SharedResource["user search"]">
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="filter-box">
+                                <div class="sorting-block">
+                                    <p class="small-title font-weight-bold">@SharedResource["Sorting"].Value</p>
+                                    <hr class="separator">
+                                    <div class="form-group">
+                                        <select asp-for="FilterViewModel.SelectedSorting" class="selected-sorting"  asp-items="Html.GetEnumSelectList<Sorting>()" id="sort-type"></select>
+                                        <span asp-validation-for="FilterViewModel.SelectedSorting" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="selected-publishers">
+                                    <p class="small-title font-weight-bold">@SharedResource["Select count of missing classes"].Value</p>
+                                    <hr class="separator">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="filter-price">
+                                            <input type="number" asp-for="@Model.FilterViewModel.FromCountOfMissingClasses" value="@Model.FilterViewModel.FromCountOfMissingClasses" min="0" class="filter-price-input" />
+                                        </div>
+                                        <div class="filter-price">
+                                            <input type="number" asp-for="@Model.FilterViewModel.ToCountOfMissingClasses" value="@Model.FilterViewModel.ToCountOfMissingClasses" min="0" class="filter-price-input" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="selected-publishers">
+                                    <p class="small-title font-weight-bold">@SharedResource["Subjects"].Value</p>
+                                    <hr class="separator">
+                                    <div class="form-group">
+                                        @foreach (var genre in Model.FilterViewModel.Subject)
+                                        {
+                                            @*<input type="checkbox" name="SelectedSubjects" value="@genre.Value" @if (Model.FilterViewModel.SelectedSubjects != null && Model.FilterViewModel.SelectedSubjects.Any(x=>x == genre.Value)) {<text> checked </text>}>*@
+                                            @*<select class="form-control select-checkbox" asp-for="FilterViewModel.SelectedSubjects" asp-items="Model.FilterViewModel.Subject" multiple size="20"></select>*@
+                                            <input asp-for="FilterViewModel.SelectedSubjects" type="radio" name="FilterViewModel.SelectedSubjects" value="@genre.Value">
+
+                                            <p class="publisher-checkbox">@genre.Text</p><br />
+                                            <span asp-validation-for="@genre" class="text-danger"></span>
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" asp-for="FilterViewModel.EducationalInstitutionId" />
+
+                                <input type="submit" value="@SharedResource["Filter"]" class="btn btn-default" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+<style>
+    .select-checkbox option::before {
+        content: "\2610";
+        width: 1.3em;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .select-checkbox option:checked::before {
+        content: "\2611";
+    }
+</style>

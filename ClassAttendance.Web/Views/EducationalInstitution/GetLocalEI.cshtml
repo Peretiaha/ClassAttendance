@@ -1,38 +1,62 @@
 ﻿@using ClassAttendance.Models.Enums
+@using ClassAttendance.Web
+@using Microsoft.AspNetCore.Mvc.Localization
 @model ClassAttendance.Web.ViewModels.LoaclEducationalInstitutionViewModel
+@inject IHtmlLocalizer<SharedResource> SharedResource
 
 @{
     ViewData["Title"] = "GetLocalEI";
 }
+<link href="~/css/SelectEI.css" rel="stylesheet" />
 
-<h2>Select country</h2>
+
+<h2>@SharedResource["Select country"]</h2>
+@if (User.IsInRole("AdminLocal"))
+{
+    <p> @Html.ActionLink("Create new", "CreateEducationalInstitution")</p>
+}
 <script src="~/js/EI/EI.js"></script>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="GetLocalEI" asp-controller="EducationalInstitution" asp-action="GetLocalEI" id="form">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <select class="btn btn-secondary dropdown-toggle" asp-for="Country" name="@nameof(Model.Country)" asp-items="Html.GetEnumSelectList<Country>()" id="country-select" onchange="sendCountry()"></select>
-                <span asp-validation-for="Country" class="text-danger"></span>
-            </div>
-        </form>
-    </div>
-</div>
-
-@if (Model.EducationalInstitutions != null)
-{
-    foreach (var item in Model.EducationalInstitutions)
-    {
-        <div style="background-color: cornsilk">
-            <p>@item.Name</p>
-            @Html.ActionLink("Edit", "Edit", new { id= item.EducationalInstitutionId}) |
-            @Html.ActionLink("Details", "Details", new {id = item.EducationalInstitutionId}) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.EducationalInstitutionId})
+    <form asp-action="GetLocalEI" asp-controller="EducationalInstitution" asp-action="GetLocalEI" id="form">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <select class="btn btn-secondary dropdown-toggle" asp-for="Country" name="@nameof(Model.Country)" asp-items="Html.GetEnumSelectList<Country>()" id="country-select" onchange="sendCountry()"></select>
+            <span asp-validation-for="Country" class="text-danger"></span>
         </div>
+    </form>
+
+    
+
+    @if (Model.EducationalInstitutions != null)
+    {
+        foreach (var item in Model.EducationalInstitutions)
+        {
+            <a>
+                <div class="game-item col-12 col-md-6 col-lg-4 col-xl-3">
+                    <div class="ei">
+                    </div>
+                    <p class="text">@item.Name</p>
+                    <p class="text">
+                        @if (User.IsInRole("AdminLocal"))
+                        {
+                            @Html.ActionLink(SharedResource["Edit"].Value, "Edit", new { id = item.EducationalInstitutionId })
+                            <text> | </text>
+                            @Html.ActionLink(SharedResource["Delete"].Value, "Delete", new { id = item.EducationalInstitutionId })
+                            <text> | </text>
+                        }
+                        @Html.ActionLink(SharedResource["Details"].Value, "Details", new { id = item.EducationalInstitutionId })
+
+                    </p>
+                </div>
+            </a>
+        }
     }
-}
-<div>
-    <a asp-action="Index" asp-controller="Home">Back to List</a>
+
+
 </div>
 
+<div>
+    <a asp-action="Index" asp-controller="Home">@SharedResource["Back"]</a>
+</div>

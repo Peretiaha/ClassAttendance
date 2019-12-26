@@ -38,10 +38,18 @@
                 <span asp-validation-for="Groups" class="text-danger"></span>
             </div>
             <div class="form-group">
+                @Html.DisplayName("Select your subjects")
+                @Html.DropDownListFor(x => x.SelectedSubjects, Model.Subjects, "Select your subjects", new { @class = "form-control", multiple = true })
+                <span asp-validation-for="Subjects" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 @Html.Display("Load your photo")
                 <input asp-for="Photo" type="file" class="form-control" />
             </div>
             <div class="form-group">
+                <input type="hidden" asp-for="UserId" />
+                <input type="hidden" asp-for="EducationalInstitutionId" />
+
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>

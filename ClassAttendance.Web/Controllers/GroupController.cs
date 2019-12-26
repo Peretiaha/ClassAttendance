@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using ClassAttendance.BLL.Dto;
 using ClassAttendance.BLL.Interfaces;
 using ClassAttendance.Models.Models;
 using ClassAttendance.Web.ViewModels;
@@ -15,13 +16,43 @@ namespace ClassAttendance.Web.Controllers
     {
         private readonly IGroupService _groupService;
         private readonly IEducationalInstitutionService _educationalInstitutionService;
+        private readonly IUserService _userService;
+        private readonly ISubjectService _subjectService;
         private readonly IMapper _mapper;
 
-        public GroupController(IGroupService groupService, IEducationalInstitutionService educationalInstitutionService, IMapper mapper)
+        public GroupController(IGroupService groupService, IEducationalInstitutionService educationalInstitutionService, IUserService userService, ISubjectService subjectService, IMapper mapper)
         {
             _groupService = groupService;
             _educationalInstitutionService = educationalInstitutionService;
+            _userService = userService;
+            _subjectService = subjectService;
             _mapper = mapper;
+        }
+
+        [HttpGet("group/details")]
+        public IActionResult Details(Guid id, Guid eIId)
+        {
+            var filterUserViewModel = new FilterUserViewModel();
+            filterUserViewModel.FilterViewModel = new FilterViewModel()
+            {
+                Subject = _subjectService.GetAllByEducationalInstitutionId(eIId).Select(x=>new SelectListItem(x.Name, x.SubjectId.ToString()))
+            };
+            filterUserViewModel.Users = _mapper.Map<IEnumerable<User>, IEnumerable<UserViewModel>>(_userService.GetAllUsersByGroupId(id));
+            filterUserViewModel.FilterViewModel.EducationalInstitutionId = eIId;
+            return View(filterUserViewModel);
+        }
+
+        [HttpPost("group/details")]
+        public IActionResult Details(FilterUserViewModel filterUserViewModel)
+        {
+            var filterDto = _mapper.Map<FilterViewModel,FilterDto>(filterUserViewModel.FilterViewModel);    //todo: Убрать это говно!!!
+            filterUserViewModel.FilterViewModel = new FilterViewModel()
+            {
+                Subject = _subjectService.GetAllByEducationalInstitutionId(filterUserViewModel.FilterViewModel.EducationalInstitutionId).Select(x => new SelectListItem(x.Name, x.SubjectId.ToString()))
+            };
+            filterUserViewModel.Users = _mapper.Map<IEnumerable<User>, IEnumerable<UserViewModel>>( _userService.FilterUsers(filterDto));
+            filterUserViewModel.FilterViewModel.EducationalInstitutionId = filterUserViewModel.FilterViewModel.EducationalInstitutionId;
+            return View(filterUserViewModel);
         }
 
         [HttpGet("group/new")]

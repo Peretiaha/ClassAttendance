@@ -15,11 +15,13 @@ namespace ClassAttendance.Web.Controllers
     public class EducationalInstitutionController : Controller
     {
         private readonly IEducationalInstitutionService _educationalInstitutionService;
+        private readonly ISubjectService _subjectService;
         private readonly IMapper _mapper;
         
-        public EducationalInstitutionController(IEducationalInstitutionService educationalInstitutionService,IMapper mapper)
+        public EducationalInstitutionController(IEducationalInstitutionService educationalInstitutionService, ISubjectService subjectService ,IMapper mapper)
         {
             _educationalInstitutionService = educationalInstitutionService;
+            _subjectService = subjectService;
             _mapper = mapper;
         }
 
@@ -85,7 +87,9 @@ namespace ClassAttendance.Web.Controllers
         {
             var educationalInstViewModel = 
                 _mapper.Map<EducationalInstitution, EducationalInstitutionViewModel>(_educationalInstitutionService.GetEducationalInstitutionById(id));
-            
+
+            educationalInstViewModel.ListOfSubjects = _mapper.Map<IEnumerable<Subject>, IEnumerable<SubjectViewModel>>(_subjectService.GetAllByEducationalInstitutionId(id));
+
             return View(educationalInstViewModel);
         }
     }

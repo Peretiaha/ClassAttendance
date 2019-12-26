@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -22,10 +23,12 @@ namespace ClassAttendance.Web.Controllers
         private readonly IRoleService _roleService;
         private readonly IGroupService _groupService;
         private readonly IEducationalInstitutionService _educationalInstitutionService;
+        private readonly ISubjectService _subjectService;
 
-        public AccountController(IUserService userService, IRoleService roleService, IGroupService groupService, IEducationalInstitutionService educationalInstitutionService, IMapper mapper)
+        public AccountController(IUserService userService, IRoleService roleService, IGroupService groupService, ISubjectService subjectService, IEducationalInstitutionService educationalInstitutionService, IMapper mapper)
         {
             _userService = userService;
+            _subjectService = subjectService;
             _educationalInstitutionService = educationalInstitutionService;
             _groupService = groupService;
             _roleService = roleService;
@@ -34,14 +37,19 @@ namespace ClassAttendance.Web.Controllers
 
         [Authorize]
         [HttpGet("user/account")]
-        public IActionResult Account()
+        public IActionResult Account(Guid userId)
         {
-            var userId = Guid.Parse(User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            if (userId == Guid.Empty)
+            {
+                userId = Guid.Parse(User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value);
+            }
+
             var user = _userService.GetUserById(userId);
             var userViewModel = _mapper.Map<User, UserViewModel>(user);
             userViewModel.Group = _groupService.GetGroupById(user.GroupId);
             userViewModel.EducationalInstitution =
                 _educationalInstitutionService.GetEIIdByGroupId(user.GroupId);
+            userViewModel.Subjects = user.UsersSubjects.Select(x => x.Subject);
             return View(userViewModel);
         }
 
@@ -56,6 +64,8 @@ namespace ClassAttendance.Web.Controllers
                 .GetAllRoles()
                 .Select(x => new SelectListItem(x.Name, x.RoleId.ToString()));
             editUserViewModel.Groups = _groupService.GetAllGroups().Select(x => new SelectListItem(x.Name, x.GroupId.ToString()));
+            editUserViewModel.Subjects = _subjectService.GetAllByEducationalInstitutionId(user.Group.EducationalInstitutionId).Select(x=> new SelectListItem(x.Name, x.SubjectId.ToString()));
+            editUserViewModel.EducationalInstitutionId = user.Group.EducationalInstitutionId;
             return View(editUserViewModel);
         }
 
@@ -65,10 +75,23 @@ namespace ClassAttendance.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = Guid.Parse(User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value);
                 var user = _mapper.Map<EditUserViewModel, User>(editUserViewModel);
+                byte[] imageData = null;
+                using (var binaryReader = new BinaryReader(editUserViewModel.Photo.OpenReadStream()))
+                {
+                    imageData = binaryReader.ReadBytes((int)editUserViewModel.Photo.Length);
+                }
+
+                user.Photo = imageData;
                 _userService.Edit(user);
                 return RedirectToAction("Account");
             }
+            editUserViewModel.Roles = _roleService
+                .GetAllRoles()
+                .Select(x => new SelectListItem(x.Name, x.RoleId.ToString()));
+            editUserViewModel.Groups = _groupService.GetAllGroups().Select(x => new SelectListItem(x.Name, x.GroupId.ToString()));
+            editUserViewModel.Subjects = _subjectService.GetAllByEducationalInstitutionId(editUserViewModel.EducationalInstitutionId).Select(x => new SelectListItem(x.Name, x.SubjectId.ToString()));
             return View(editUserViewModel);
         }
 
@@ -114,14 +137,27 @@ namespace ClassAttendance.Web.Controllers
             return View(loginViewModel);
         }
 
-        [HttpGet("account/registration")]
-        public IActionResult Registration()
+        [HttpGet("account/selectEI")]
+        public IActionResult SelectEI()
         {
+            var eIs = _mapper.Map<IEnumerable<EducationalInstitution>, IEnumerable<EducationalInstitutionViewModel>>(_educationalInstitutionService.GetAllEducationalInstitutions());
+            return View(eIs);
+        }
+
+        [HttpGet("account/registration")]
+        public IActionResult Registration(Guid eIid)
+        {
+            if (eIid == Guid.Empty)
+            {
+                return RedirectToAction("SelectEI");
+            }
+
             var registerViewModel = new RegisterViewModel();
             registerViewModel.Roles = _roleService
                 .GetAllRoles()
                 .Select(x => new SelectListItem(x.Name, x.RoleId.ToString()));
-            registerViewModel.Groups = _groupService.GetAllGroups().Select(x=> new SelectListItem(x.Name, x.GroupId.ToString()));
+            registerViewModel.Groups = _groupService.GetAllByEIId(eIid).Select(x=> new SelectListItem(x.Name, x.GroupId.ToString()));
+            registerViewModel.Subjects = _subjectService.GetAllByEducationalInstitutionId(eIid).Select(x=>new SelectListItem(x.Name,x.SubjectId.ToString()));
             return View(registerViewModel);
         }
 
@@ -132,7 +168,17 @@ namespace ClassAttendance.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = _mapper.Map<RegisterViewModel, User>(registerViewModel);
-                var role = _roleService.GetRoleByName("Student");
+                var userId = Guid.NewGuid();
+                var role = new Role();
+                if (registerViewModel.SelectedRoles != null)
+                {
+                     role = _roleService.GetRoleById(registerViewModel.SelectedRoles.FirstOrDefault());
+                }
+                else
+                {
+                    role = _roleService.GetRoleByName("Student");
+                }
+
                 user.UsersRoles = new List<UsersRoles>()
                 {
                     new UsersRoles()
@@ -140,10 +186,42 @@ namespace ClassAttendance.Web.Controllers
                         Role = role
                     }
                 };
+                if (registerViewModel.SelectedSubjects != null)
+                {
+                    var userSubjects = new List<UsersSubjects>();
+                    foreach (var subject in registerViewModel.SelectedSubjects)
+                    {
+                        userSubjects.Add(new UsersSubjects()
+                        {
+                            SubjectId = subject,
+                            UserId = userId,
+                            NumberOfVisits = 0
+                        });
+                    }
+
+                    user.UsersSubjects = userSubjects;
+                }
+
+                user.UserId = userId;
+
+                if (registerViewModel.Photo != null)
+                {
+                    byte[] imageData = null;
+                    using (var binaryReader = new BinaryReader(registerViewModel.Photo.OpenReadStream()))
+                    {
+                        imageData = binaryReader.ReadBytes((int)registerViewModel.Photo.Length);
+                    }
+                    user.Photo = imageData;
+                }
                 _userService.Create(user);
                 return RedirectToAction("LoginAsync");
             }
 
+            registerViewModel.Roles = _roleService
+                .GetAllRoles()
+                .Select(x => new SelectListItem(x.Name, x.RoleId.ToString()));
+            registerViewModel.Groups = _groupService.GetAllByEIId(registerViewModel.EIId).Select(x => new SelectListItem(x.Name, x.GroupId.ToString()));
+            registerViewModel.Subjects = _subjectService.GetAllByEducationalInstitutionId(registerViewModel.EIId).Select(x => new SelectListItem(x.Name, x.SubjectId.ToString()));
             return View(registerViewModel);
         }
 

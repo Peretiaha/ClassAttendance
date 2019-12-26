@@ -1,54 +1,82 @@
-﻿@model ClassAttendance.Web.ViewModels.UserViewModel
+﻿@using ClassAttendance.Web
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ClassAttendance.Web.ViewModels.UserViewModel
+@inject IHtmlLocalizer<SharedResource> SharedResource
 
 @{
     ViewData["Title"] = "Profile";
 }
 
-    <h2>Profile</h2>
+<h2>Profile</h2>
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Lastname)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Lastname)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Birthday)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Birthday)
-        </dd>
-        <dt>
-            @Html.DisplayName("Group")
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Group.Name)
-        </dd>
-        <dt>
-            @Html.DisplayName("Educational Institution")
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EducationalInstitution.Name)
-        </dd>
+<section class="row mb-5">
+    <div class="col-12 col-sm-4 col-xl-6 h-100">
+        <div class="product-display d-flex position-relative">
+            <div class="image-fit-wrapper-75"></div>
+            @if (Model.Photo.Length != 0)
+            {
 
-    </dl>
-</div>
+                <div> 
+                    <img style="height: 400px" src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Photo))"/>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <img src="~/images/user.jpg" class="image-fit" />
+                </div>
+            }
+
+        </div>
+        <div class="row product-images m-0 justify-content-between">
+        </div>
+    </div>
+    <div class="col">
+        <h3 class="game-title">@Model.Name @Model.Lastname</h3>
+        <div class="d-flex justify-content-between">
+            <div class="d-flex">
+                
+                <span class="small-title font-weight-bold">
+                </span>
+            </div>
+        </div>
+        <div class="game-core-details">
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <p class="small-title font-weight-bold mb-1">@Html.ActionLink(Model.Group.Name, null,null,null, new { @class = "text-orange" })</p>
+                    <span>@Model.Birthday</span>
+                </div>
+                <div class="col-3"></div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-3">
+                    <p class="small-title font-weight-bold mb-1">@Model.Email</p>
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="small-title font-weight-bold mb-1">@SharedResource["Subjects"]</p>
+                    @foreach (var item in Model.Subjects)
+                    {
+                        <span style="background-color: #ff7e2a; color: aliceblue; border: 1px solid #ff7e2a;" class="ganre-border">@item.Name</span>
+                    }
+                </div>
+            </div>
+            @*@Html.ActionLink(Localizer["Buy"].Value, "Buy", "Game", new { gamekey = Model.Key }, new { @class = "btn-gamestore small-title mt-4" })*@
+        </div>
+        <div></div>
+        <div class="row">
+            <div class="col">
+                <p class="small-title font-weight-bold mb-1">@SharedResource["EI"]</p>
+                <p class="large-title"> @Model.EducationalInstitution.Name</p>
+                <p class="small-title font-weight-bold mb-1">@SharedResource["Country"]</p>
+                <p class="large-title"> @Model.EducationalInstitution.Country</p>
+            </div>
+        </div>
+    </div>
+</section>
 <div>
-    @Html.ActionLink("Edit", "EditProfile") 
-    <a asp-controller="Home" asp-action="Index">Back to List</a>
+    @Html.ActionLink(SharedResource["Edit"].Value, "EditProfile")
+    <a asp-controller="Home" asp-action="Index">@SharedResource["Back"]</a>
 </div>

@@ -1,4 +1,7 @@
-﻿@model ClassAttendance.Web.ViewModels.GroupViewModel
+﻿@using ClassAttendance.Web
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ClassAttendance.Web.ViewModels.GroupViewModel
+@inject IHtmlLocalizer<SharedResource> SharedResource
 
 @{
     ViewData["Title"] = "GetAll";
@@ -8,7 +11,7 @@
 @if (User.IsInRole("AdminLocal"))
 {
     <p>
-        <a asp-action="Create">Create New</a>
+        <a asp-action="Create">@SharedResource["Create"]</a>
     </p>
 }
 
@@ -17,44 +20,46 @@
         <form asp-controller="Group" asp-action="GetAll" id="form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                @Html.DropDownListFor(x=>x.SelectedEducationalInstitution, Model.EducationalInstitutions, "Select your educational institution", new { @class="btn btn-secondary dropdown-toggle", id = "unit-select" ,onchange="sendCountry()"})
+                @Html.DropDownListFor(x => x.SelectedEducationalInstitution, Model.EducationalInstitutions, SharedResource["Select your Educational Institution"].Value, new { @class = "btn btn-secondary dropdown-toggle", id = "unit-select", onchange = "sendCountry()" })
                 <span asp-validation-for="EducationalInstitutions" class="text-danger"></span>
             </div>
         </form>
     </div>
 </div>
-@if (Model.Groupes !=null)
+@if (Model.Groupes != null)
 {
     <table class="table">
         <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-        </tr>
+            <tr>
+                <th>
+                    @Html.DisplayName(SharedResource["Name"].Value)
+                </th>
+            </tr>
         </thead>
         <tbody>
-      
+
             @foreach (var item in Model.Groupes)
             {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
-        @if (User.IsInRole("AdminLocal"))
-        {
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id= item.GroupId}) |
-                @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.GroupId})
-            </td>
-        }
+                    <td>
+
+                        @if (User.IsInRole("AdminLocal"))
+                        {
+                            @Html.ActionLink(SharedResource["Edit"].Value, "Edit", new { id = item.GroupId }) <text> | </text>
+
+                            @Html.ActionLink(SharedResource["Delete"].Value, "Delete", new { id = item.GroupId }) <text> | </text>
+                        }
+                        @Html.ActionLink(SharedResource["Details"].Value, "Details", new { id = item.GroupId, eIId = item.EducationalInstitutionId })
+                    </td>
+
                 </tr>
             }
         </tbody>
     </table>
 }
-
 
 <script>
     function sendCountry() {

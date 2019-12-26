@@ -12,10 +12,12 @@ namespace ClassAttendance.Web.ViewModels
     {
         [Required]
         [DataType(DataType.Text)]
+        [MinLength(5), MaxLength(20)]
         public string Name { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
+        [MinLength(5), MaxLength(20)]
         public string Lastname { get; set; }
 
         [Required]
@@ -43,6 +45,12 @@ namespace ClassAttendance.Web.ViewModels
         public IEnumerable<SelectListItem> Groups { get; set; }
 
         public Guid SelectedGroup { get; set; }
+
+        public IEnumerable<SelectListItem> Subjects { get; set; }
+
+        public IEnumerable<Guid> SelectedSubjects { get; set; }
+
+        public Guid EIId { get; set; }
 
         public IFormFile Photo { get; set; }
     }

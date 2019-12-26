@@ -1,0 +1,24 @@
+﻿@using ClassAttendance.Web
+@using Microsoft.AspNetCore.Mvc.Localization
+@model IEnumerable<ClassAttendance.Web.ViewModels.EducationalInstitutionViewModel>
+@inject IHtmlLocalizer<SharedResource> SharedResource
+
+@{
+    ViewData["Title"] = "SelectEI";
+}
+
+    <link href="~/css/SelectEI.css" rel="stylesheet" />
+<h2>@SharedResource["Select your Educational Institution before registration"]</h2>
+
+<div class="row">
+        @foreach (var item in Model)
+        {
+            <a asp-action="Registration" asp-route-id="@item.EducationalInstitutionId">
+                <div class="game-item col-12 col-md-6 col-lg-4 col-xl-3">
+                    <div class="ei">
+                    </div>
+                    <p class="text"> @Html.ActionLink(item.Name, "Registration", new { eIid = item.EducationalInstitutionId} )</p>
+                </div>
+            </a>
+        }
+</div>

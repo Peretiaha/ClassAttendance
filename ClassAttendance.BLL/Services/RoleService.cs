@@ -38,6 +38,11 @@ namespace ClassAttendance.BLL.Services
             return _unitOfWork.GetRepository<Role>().GetSingle(x => x.Name == name);
         }
 
+        public Role GetRoleById(Guid id)
+        {
+            return _unitOfWork.GetRepository<Role>().GetSingle(x => x.RoleId == id);
+        }
+
         public void Create(Role entity)
         {
             _unitOfWork.GetRepository<Role>().Insert(entity);

@@ -59,12 +59,12 @@ namespace ClassAttendance.DAL.Repository
 
         public void Update(T entity)
         {
-            if (_context.Entry(entity).State == EntityState.Detached)
-            {
-                _dbSet.Attach(entity);
-            }
-            _context.Entry(entity).State = EntityState.Modified;
-
+            //if (_context.Entry(entity).State == EntityState.Detached)
+            //{
+            //    _dbSet.Attach(entity);
+            //}
+            //_context.Entry(entity).State = EntityState.Modified;
+            _context.Set<T>().Update(entity);
         }
 
         public void Delete(T entity)

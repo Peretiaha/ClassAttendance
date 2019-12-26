@@ -1,4 +1,7 @@
-﻿@model ClassAttendance.Web.ViewModels.GroupViewModel
+﻿@using ClassAttendance.Web
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ClassAttendance.Web.ViewModels.GroupViewModel
+@inject IHtmlLocalizer<SharedResource> SharedResource
 
 @{
     ViewData["Title"] = "Create";
@@ -19,18 +22,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="SelectedEducationalInstitution" class="control-label"></label>
-                @Html.DropDownListFor(x=>x.SelectedEducationalInstitution, Model.EducationalInstitutions, "Select your educational institution", new {@class="btn btn-secondary dropdown-toggle"})
+                @Html.DropDownListFor(x=>x.SelectedEducationalInstitution, Model.EducationalInstitutions, SharedResource["Select your Educational Institution"].Value, new {@class="btn btn-secondary dropdown-toggle"})
                 <span asp-validation-for="SelectedEducationalInstitution" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="@SharedResource["Create"]" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Home" asp-action="Index">@SharedResource["Back"]</a>
 </div>
 
 @section Scripts {

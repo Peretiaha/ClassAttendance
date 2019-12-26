@@ -10,6 +10,7 @@ namespace ClassAttendance.Web.ViewModels
 {
     public class EditUserViewModel
     {
+        public Guid UserId { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
@@ -36,5 +37,11 @@ namespace ClassAttendance.Web.ViewModels
         public Guid SelectedGroup { get; set; }
 
         public IFormFile Photo { get; set; }
+
+        public IEnumerable<SelectListItem> Subjects { get; set; }
+
+        public IEnumerable<Guid> SelectedSubjects { get; set; }
+
+        public Guid EducationalInstitutionId { get; set; }
     }
 }

@@ -1,4 +1,7 @@
-﻿@model ClassAttendance.Web.ViewModels.EducationalInstitutionViewModel
+﻿@using ClassAttendance.Web
+@using Microsoft.AspNetCore.Mvc.Localization
+@model ClassAttendance.Web.ViewModels.EducationalInstitutionViewModel
+@inject IHtmlLocalizer<SharedResource> SharedResource
 
 @{
     ViewData["Title"] = "Details";
@@ -10,25 +13,25 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayName(SharedResource["Name"].Value)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Type)
+            @Html.DisplayName(SharedResource["Type"].Value)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Type)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Country)
+            @Html.DisplayName(SharedResource["Country"].Value)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Country)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.City)
+            @Html.DisplayName(SharedResource["City"].Value)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.City)
@@ -37,6 +40,18 @@
 </div>
 
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.EducationalInstitutionId }) |
-    <a asp-action="GetLocalEI">Back to List</a>
+    @if (User.IsInRole("AdminLocal"))
+    {
+        @Html.ActionLink(SharedResource["Edit"].Value, "Edit", new {id = Model.EducationalInstitutionId}) <text> | </text>
+    }
+    @Html.ActionLink(SharedResource["Add subject"].Value, "Create", "Subject", new {educationalInstitutionId = Model.EducationalInstitutionId}) |
+
+    <a asp-action="GetLocalEI">@SharedResource["Back"].Value</a>
+</div>
+<div class="subjects">
+    @foreach(var subject in Model.ListOfSubjects)
+    {
+        @Html.ActionLink(subject.Name, "Edit", "Subject",new { id = subject.SubjectId })
+        <br/>
+    }
 </div>

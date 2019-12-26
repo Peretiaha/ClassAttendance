@@ -18,9 +18,9 @@ namespace ClassAttendance.DAL.Configurations
             builder.HasData(new Role
                 { RoleId = Guid.Parse("f4be7c9d-8999-40c6-9dbd-1e7341ebaad6"), Name = "Student" });
             builder.HasData(new Role
-                { RoleId = Guid.Parse("b0c569d5-059f-4828-84f9-052cf236529f"), Name = "Parent" });
-            builder.HasData(new Role
                 { RoleId = Guid.Parse("19a770f7-0128-4674-a99a-da2a9fda5fb4"), Name = "Headman" });
+            builder.HasData(new Role
+                { RoleId = Guid.Parse("fcdce55a-1339-41aa-be14-7b72068f2fc0"), Name = "Teacher" });
         }
     }
 }

@@ -12,5 +12,7 @@ namespace ClassAttendance.BLL.Interfaces
         IEnumerable<Role> GetAllUserRoles(Guid userId);
 
         Role GetRoleByName(string name);
+
+        Role GetRoleById(Guid id);
     }
 }

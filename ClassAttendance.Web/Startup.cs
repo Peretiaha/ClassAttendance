@@ -16,6 +16,7 @@ using AutoMapper;
 using ClassAttendance.BLL.Interfaces;
 using ClassAttendance.BLL.Services;
 using ClassAttendance.Web.Authorization;
+using ClassAttendance.Web.ContainerConfigurator;
 using ClassAttendance.Web.Mapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
@@ -62,13 +63,7 @@ namespace ClassAttendance.Web
             var mappingConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
-            //services.AddPaging(options =>
-            //{
-            //    options.ViewName = "Bootstrap4";
-            //    options.HtmlIndicatorDown = " <span>&darr;</span>";
-            //    options.HtmlIndicatorUp = " <span>&uarr;</span>";
-            //});
-
+           
             var connection = @"Server=EPUAKHAW0861;Database=ClassAttendanceDb;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<ClassAttendanceContext>(options => options.UseSqlServer(connection));
 
@@ -104,6 +99,7 @@ namespace ClassAttendance.Web
             var builder = new ContainerBuilder();
             
             builder.RegisterModule(new InfrastructureContainerConfigurator());
+            builder.RegisterModule<ViewModelFillerConfigurator>();
 
             services
                 .AddSingleton<ITokenFactory, JwtTokenFactory>()

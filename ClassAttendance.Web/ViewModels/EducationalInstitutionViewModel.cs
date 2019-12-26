@@ -18,5 +18,6 @@ namespace ClassAttendance.Web.ViewModels
 
         public string City { get; set; }
 
-   }
+        public IEnumerable<SubjectViewModel> ListOfSubjects { get; set; }
+    }
 }

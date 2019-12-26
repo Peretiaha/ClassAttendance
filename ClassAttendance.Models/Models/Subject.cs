@@ -11,13 +11,18 @@ namespace ClassAttendance.Models.Models
 
         public string Name { get; set; }
 
-        public NumberOfLesson NumberOfLesson { get; set; }
+        public int NumberOfLessons { get; set; }
 
         public Guid TeacherId { get; set; }
 
         public User Teacher { get; set; }
 
         public IEnumerable<UsersSubjects> UsersSubjects { get; set; }
+
+        public EducationalInstitution EducationalInstitution { get; set; }
+
+        public Guid EducationalInstitutionId { get; set; }
+
 
         public bool IsDeleted { get; set; }
     }

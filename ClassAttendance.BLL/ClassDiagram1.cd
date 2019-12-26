@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ClassAttendance.BLL.Dto.FilterDto" Collapsed="true">
+    <Position X="18.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAACAAABAAAACAAAAAAAAAAAIAAAABAAAAAAAA=</HashCode>
+      <FileName>Dto\FilterDto.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClassAttendance.BLL.Hash.Hashhing" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Hash\Hasshing.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ClassAttendance.BLL.Services.EducationalInstitutionService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAABgABAAAAAAEAAEACAAAAAEgAAAA=</HashCode>
+      <FileName>Services\EducationalInstitutionService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ClassAttendance.BLL.Services.GroupService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgABAAAAAAEAIEACAACAAAEQAAA=</HashCode>
+      <FileName>Services\GroupService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ClassAttendance.BLL.Services.RoleService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAEAAAAAAAAAAAAgABAAACAAEAAEACAAABAAAAAAA=</HashCode>
+      <FileName>Services\RoleService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ClassAttendance.BLL.Services.SubjectService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgABAAAAAAEAAFAiAAAAAAAAAAA=</HashCode>
+      <FileName>Services\SubjectService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ClassAttendance.BLL.Services.UserService" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAIAAAAAAAAggABAAgAAAEAAEACAEAQAAEAAAA=</HashCode>
+      <FileName>Services\UserService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ClassAttendance.DAL.Configurations.RoleConfiguration" Collapsed="true">
+    <Position X="11" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassAttendance.DAL.Configurations.UsersSubjectsConfiguration" Collapsed="true">
+    <Position X="11.25" Y="5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassAttendance.DAL.Context.ClassAttendanceContext" Collapsed="true">
+    <Position X="11.25" Y="6" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassAttendance.DAL.Repository.RepositoryFactory" Collapsed="true">
+    <Position X="15" Y="5.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClassAttendance.DAL.Repository.SqlRepository&lt;T&gt;" Collapsed="true">
+    <Position X="16.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClassAttendance.DAL.UnitOfWork.UnitOfWork" Collapsed="true">
+    <Position X="15" Y="7" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClassAttendance.Models.Models.EducationalInstitution" Collapsed="true">
+    <Position X="5.25" Y="4" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassAttendance.Models.Models.Group" Collapsed="true">
+    <Position X="7" Y="4" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassAttendance.Models.Models.Role" Collapsed="true">
+    <Position X="8.75" Y="4" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassAttendance.Models.Models.Subject" Collapsed="true">
+    <Position X="5.25" Y="5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassAttendance.Models.Models.User" Collapsed="true">
+    <Position X="7" Y="5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassAttendance.Models.Models.UsersRoles" Collapsed="true">
+    <Position X="8.75" Y="5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ClassAttendance.Models.Models.UsersSubjects" Collapsed="true">
+    <Position X="5.25" Y="6" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="ClassAttendance.BLL.Interfaces.IEducationalInstitutionService" Collapsed="true">
+    <Position X="9.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAEgAAAA=</HashCode>
+      <FileName>Interfaces\IEducationalInstitutionService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClassAttendance.BLL.Interfaces.IGroupService" Collapsed="true">
+    <Position X="12" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAACAAAEQAAA=</HashCode>
+      <FileName>Interfaces\IGroupService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClassAttendance.BLL.Interfaces.IHash" Collapsed="true">
+    <Position X="16.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IHash.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClassAttendance.BLL.Interfaces.IRoleService" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAEAAAAAAAAAAAAAAAAAACAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Interfaces\IRoleService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClassAttendance.BLL.Interfaces.IService&lt;TEntity&gt;" Collapsed="true">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAEACAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClassAttendance.BLL.Interfaces.ISubjectService" Collapsed="true">
+    <Position X="14.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAgAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISubjectService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClassAttendance.BLL.Interfaces.IUserService" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAIAAAAAAAAgAAAAAgAAAAAAAAAAEAQAAEAAAA=</HashCode>
+      <FileName>Interfaces\IUserService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClassAttendance.DAL.Interfaces.IRepository&lt;T&gt;" Collapsed="true">
+    <Position X="19" Y="3" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="ClassAttendance.DAL.Interfaces.IRepositoryFactory" Collapsed="true">
+    <Position X="20.75" Y="3" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="ClassAttendance.DAL.UnitOfWork.IUnitOfWork" Collapsed="true">
+    <Position X="15" Y="8.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

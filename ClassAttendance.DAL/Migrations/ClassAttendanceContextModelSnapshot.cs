@@ -72,8 +72,8 @@ namespace ClassAttendance.DAL.Migrations
                         new { RoleId = new Guid("88b510f1-ce1f-48ec-a39c-c2da62b41e51"), Name = "AdminGlobal" },
                         new { RoleId = new Guid("b3de9a30-ec07-4f1b-80ee-fc14892e0182"), Name = "AdminLocal" },
                         new { RoleId = new Guid("f4be7c9d-8999-40c6-9dbd-1e7341ebaad6"), Name = "Student" },
-                        new { RoleId = new Guid("b0c569d5-059f-4828-84f9-052cf236529f"), Name = "Parent" },
-                        new { RoleId = new Guid("19a770f7-0128-4674-a99a-da2a9fda5fb4"), Name = "Headman" }
+                        new { RoleId = new Guid("19a770f7-0128-4674-a99a-da2a9fda5fb4"), Name = "Headman" },
+                        new { RoleId = new Guid("fcdce55a-1339-41aa-be14-7b72068f2fc0"), Name = "Teacher" }
                     );
                 });
 
@@ -82,15 +82,19 @@ namespace ClassAttendance.DAL.Migrations
                     b.Property<Guid>("SubjectId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<Guid>("EducationalInstitutionId");
+
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("NumberOfLesson");
+                    b.Property<int>("NumberOfLessons");
 
                     b.Property<Guid>("TeacherId");
 
                     b.HasKey("SubjectId");
+
+                    b.HasIndex("EducationalInstitutionId");
 
                     b.HasIndex("TeacherId");
 
@@ -165,6 +169,11 @@ namespace ClassAttendance.DAL.Migrations
 
             modelBuilder.Entity("ClassAttendance.Models.Models.Subject", b =>
                 {
+                    b.HasOne("ClassAttendance.Models.Models.EducationalInstitution", "EducationalInstitution")
+                        .WithMany("Subjects")
+                        .HasForeignKey("EducationalInstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("ClassAttendance.Models.Models.User", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")

@@ -10,6 +10,8 @@ namespace ClassAttendance.Web.ViewModels
 {
     public class UserViewModel
     {
+        public Guid UserId { get; set; }
+
         [Required]
         [DataType(DataType.Text)]
         public string Name { get; set; }
@@ -35,6 +37,10 @@ namespace ClassAttendance.Web.ViewModels
         public IEnumerable<Guid> SelectedRoles { get; set; }
 
         public IEnumerable<SelectListItem> Groupes { get; set; }
+
+        public IEnumerable<Subject> Subjects { get; set; }
+
+        public IEnumerable<Guid> SelectedSubjects { get; set; }
 
         public Guid SelectedGroupe { get; set; }
 
